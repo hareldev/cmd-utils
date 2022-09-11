@@ -17,9 +17,9 @@ Jenkins.instance.getItem('place-pipeline-name-here').builds.findAll { it.result 
 null
 ```
 
-## Stop and abort stuck build
+## Stop stuck / frozen build
 
-Stuck or frozen builds could be released by running the following script from console -
+Stuck or frozen pipelines could be released by aborting the specific build that is currently running using the following script from console -
 
 2 placeholders should be replaced:
 * `place-pipeline-name-here`
