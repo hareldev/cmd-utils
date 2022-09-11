@@ -2,7 +2,7 @@
 
 ## List failed jobs in a pipeline
 
-This script will list all builds that were not succeed in the pipeline. This includes the following states: `ABORTED`, `FAILURE` [as listed here](https://javadoc.jenkins-ci.org/hudson/model/Result.html).
+This script will list all builds that were not succeed in the pipeline. This includes the following states: `ABORTED`, `FAILURE` [as listed here](https://javadoc.jenkins-ci.org/hudson/model/Result.html). Also, `null` will be reported for cases were the jon is still running.
 
 1 placeholder should be replaced:
 * `place-pipeline-name-here`
