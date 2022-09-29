@@ -10,7 +10,7 @@ This script will list all builds that were not succeed in the pipeline. This inc
 ```
 import hudson.model.Result
 
-Jenkins.instance.getItem('place-pipeline-name-here').builds.findAll { it.result != Result.SUCCESS }.each {
+Jenkins.instance.getItemByFullName('folder-name/place-pipeline-name-here').builds.findAll { it.result != Result.SUCCESS }.each {
   println "#${it.number} Status:${it.result} \n    ${it.absoluteUrl}"
 }
 
