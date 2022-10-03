@@ -12,7 +12,7 @@ We will then perform the following:
     
     Download the hwmon update script to the folder where `thinkfan` executable is kept.
     ```
-    wget ....
+    wget https://raw.githubusercontent.com/hareldev/cmd-utils/main/thinkfan/thinkfanHwmonUpdate.sh
     ```
 
 2. Change this file to exectuable:
