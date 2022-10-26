@@ -30,3 +30,39 @@ Jenkins.instance.getItemByFullName("place-pipeline-name-here")
         .getBuildByNumber(build_num)
         .finish(hudson.model.Result.ABORTED, new java.io.IOException("Aborting build"));
 ```
+
+## Delete last N builds
+
+2 placeholders should be replaced:
+* Min Builds to keep
+* `place-pipeline-name-here`
+
+```
+
+import jenkins.model.Jenkins
+import hudson.model.Job
+
+MIN_BUILD_LOGS = 7
+
+def sixMonthsAgo = new Date() - 180
+
+Jenkins.instance.getItemByFullName('folder-name/place-pipeline-name-here').each { job ->
+  println job.getFullDisplayName()
+  
+  def recent = job.builds.limit(MIN_BUILD_LOGS)
+  
+  def buildsToDelete = job.builds.findAll {
+    !recent.contains(it) && ! (it.getTime() > sixMonthsAgo)
+  }
+  
+  if (!buildsToDelete) {
+    println "nothing to do"
+  }
+  for (build in buildsToDelete) {
+    println "Preparing to delete: " + build + build.getTime()
+    // ["bash", "-c", "rm -r " + build.getRootDir()].execute()
+    // build.delete()
+  }
+}
+
+```
