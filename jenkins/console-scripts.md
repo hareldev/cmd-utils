@@ -39,6 +39,11 @@ Jenkins.instance.getItemByFullName("place-pipeline-name-here")
 
 ```
 
+// setting increased timeout to make sure commands will not abort, as it could take up to 1min:
+System.setProperty("httpKeepAliveTimeout","60000")
+System.setProperty("httpsKeepAliveTimeout","60000")
+// still 504 Gateway Time-out after this change, need to investigate
+
 import jenkins.model.Jenkins
 import hudson.model.Job
 
