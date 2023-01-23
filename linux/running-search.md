@@ -1,5 +1,10 @@
 # Useful Linux commands related to SEARCH
 
+## Simple search for file names
+
+```
+find . -name "filename*.txt"
+```
 ## Search for keywords in files - recursively
 
 ```
