@@ -4,7 +4,7 @@
 [source](https://stackoverflow.com/questions/5905054/how-can-i-recursively-find-all-files-in-current-and-subfolders-based-on-wildcard)
 
 ```
-find . -name "filename*.txt"
+find . -name "filename*.txt" 2>/dev/null
 ```
 ## Search for keywords in files - recursively
 
