@@ -71,3 +71,55 @@ Jenkins.instance.getItemByFullName('folder-name/place-pipeline-name-here').each 
 }
 
 ```
+
+## Delete Workflows from all builds
+There are situations where `workflow` XML files are getting large in size, and it needs to be removed in order to preserve disk space.
+[Example related post](https://community.jenkins.io/t/can-i-delete-workflow-xml-files/4095)
+
+1 placeholder should be replaced:
+* `place-pipeline-name-here`
+```
+System.setProperty("httpKeepAliveTimeout","60000")
+System.setProperty("httpsKeepAliveTimeout","60000")
+
+import jenkins.model.Jenkins
+import hudson.model.Job
+
+job_name_to_cleanup="place-pipeline-name-here"
+
+def calculateFolderSize(path){
+  def du_string = "du -s ${path}";
+  def du_command = du_string.execute();
+  def outputStream = new StringBuffer();
+  du_command.waitForProcessOutput(outputStream, System.err);
+  return outputStream.toString().split()[0].toInteger();
+}
+
+Jenkins.instance.getAllItems(Job.class).each{job ->
+  if (job.name != job_name_to_cleanup){
+    return
+  }
+  
+  println "Checking " + job.getFullDisplayName()
+  def jobBuilds=job.getBuilds()
+  if (jobBuilds.size() > 0){
+    println "${jobBuilds.size()} builds found"
+    jobBuilds.each { build ->
+      if (!build.isBuilding()){
+          def folder_to_clean="${build.getRootDir()}/workflow/*.xml";
+          def build_folder_size_before = calculateFolderSize(build.getRootDir());
+          
+          println "Deleting workflow from " + build;
+          def rm_list = ["bash", "-c", "rm " + folder_to_clean];
+          def rm_command = rm_list.execute();
+          def outputStream = new StringBuffer();
+  		    rm_command.waitForProcessOutput(outputStream, System.err);
+        
+          def build_folder_size_after = calculateFolderSize(build.getRootDir());
+          println "${(build_folder_size_before-build_folder_size_after)/1024}MB of disk space saved!"
+      }
+    }
+  }
+}
+return
+```
