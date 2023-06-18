@@ -113,7 +113,7 @@ Jenkins.instance.getAllItems(Job.class).each{job ->
           def rm_list = ["bash", "-c", "rm " + folder_to_clean];
           def rm_command = rm_list.execute();
           def outputStream = new StringBuffer();
-  		    rm_command.waitForProcessOutput(outputStream, System.err);
+          rm_command.waitForProcessOutput(outputStream, System.err);
         
           def build_folder_size_after = calculateFolderSize(build.getRootDir());
           println "${(build_folder_size_before-build_folder_size_after)/1024}MB of disk space saved!"
