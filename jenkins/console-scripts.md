@@ -31,6 +31,30 @@ Jenkins.instance.getItemByFullName("place-pipeline-name-here")
         .finish(hudson.model.Result.ABORTED, new java.io.IOException("Aborting build"));
 ```
 
+## Search for running builds, and abort all
+
+Inspired by [this gist](https://gist.github.com/akostadinov/2380acfc5df3518ab5b99625734c52da), this script will look for any build currently running, and will abort it.
+
+```
+import jenkins.model.Jenkins
+
+def numCancels = 0;
+Jenkins.instance.getAllItems(Job.class).each{ 
+  def job = it
+  for (build in job.builds) {
+    if (build.isBuilding()) { 
+      println "Stopping build #${build.number} in job: ${job.getFullName()}"
+      Jenkins.instance.getItemByFullName(${job.getFullName()})
+        .getBuildByNumber(build.number)
+        .finish(hudson.model.Result.ABORTED, new java.io.IOException("Aborting build"));	
+      numCancels++;
+    }
+  }  
+}
+
+println("Total of ${numCancels} builds have been cancelled");
+```
+
 ## Delete last N builds
 
 2 placeholders should be replaced:
