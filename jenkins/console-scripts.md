@@ -44,7 +44,7 @@ Jenkins.instance.getAllItems(Job.class).each{
   for (build in job.builds) {
     if (build.isBuilding()) { 
       println "Stopping build #${build.number} in job: ${job.getFullName()}"
-      Jenkins.instance.getItemByFullName(${job.getFullName()})
+      Jenkins.instance.getItemByFullName(job.getFullName())
         .getBuildByNumber(build.number)
         .finish(hudson.model.Result.ABORTED, new java.io.IOException("Aborting build"));	
       numCancels++;
