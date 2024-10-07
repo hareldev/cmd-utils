@@ -96,3 +96,13 @@ pipeline {
     }
 }
 ```
+
+### Requires the following signature approvals:
+```
+staticMethod jenkins.model.Jenkins getInstance
+method hudson.model.ItemGroup getAllItems java.lang.Class
+method hudson.model.Item getFullDisplayName
+method hudson.model.Job getBuilds
+method hudson.model.Run isBuilding
+method hudson.model.PersistenceRoot getRootDir
+```
