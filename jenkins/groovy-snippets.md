@@ -56,3 +56,43 @@ if (CliMode){
     // CLI is configured
 }
 ```
+
+## Cleanup pipeline for all builds with "libs" folder:
+```
+pipeline {
+    options {
+        timestamps()
+    }
+    agent { label "master||built-in" }
+    stages {
+        stage('Cleanup') {
+            steps {
+                script {
+                        libsDir = "libs"
+
+                        Jenkins.instance.getAllItems(Job.class).each{job ->
+                            println "Checking " + job.getFullDisplayName()
+                            def jobBuilds = job.getBuilds()
+                            if (jobBuilds.size() > 0){
+                            jobBuilds.each { build ->
+                                if (!build.isBuilding()){
+                                    def folder_to_clean="${build.getRootDir()}/${libsDir}";
+                                    
+                                    def dir = new File(folder_to_clean)
+                                    if (dir.exists()) {
+                                        println "Deleting libs from " + folder_to_clean;
+                                        def rm_libs = ["bash", "-c", "rm -r " + folder_to_clean];
+                                        def rm_command = rm_libs.execute();
+                                        def outputStream = new StringBuffer();
+                                        rm_command.waitForProcessOutput(outputStream, System.err);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+```
